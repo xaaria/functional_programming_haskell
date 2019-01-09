@@ -54,13 +54,13 @@ isLeap y = if y `mod` 4 /= 0
         then False
     else True
     
-    
-    
+
+        
 -- 01-04
 -- Write a function that, given a date, calculates the next date.
 -- Using that function, write another function that tells the distance of two dates. 
 -- The distance of today and tomorrow is 1, 
 -- today and the day after tomorrow is 2, etc. Use recursively the function that calculates the next date.
 
--- We will assume that date is valid. This means that yyyy-02-29 is though to be the last day of that month (implicit check)
--- Only yyyy-02-29 is checked, if leap year: it is NOT the last day of that month.
+-- We will assume that date is valid. This means that yyyy-02-29 is thought to be the last day of that month (implicit check)
+-- Only yyyy-02-28 is checked, if leap year: it is NOT the last day of that month.
