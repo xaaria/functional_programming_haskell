@@ -9,17 +9,39 @@ import Data.List as DL
     Return the answer as a list of (support,string) pairs.
     E.g. if xs = ["hello","there","all"] and k = 3, 
     then one possible answer is [(2,"ll"),(2,"he"),(1,"th")]
+    
+    '
+    
+    
+    !!!
+    !!! Known problems: does not remove duplicates from result!
+    !!!
 -}
 
 
--- take k (DL.sortBy (\(a,_) (b,_) -> compare a b) )
+-- took from here: https://stackoverflow.com/questions/9507358/flatten-a-list-of-lists
 flatten :: [[a]] -> [a]         
 flatten xs = (\z n -> foldr (\x y -> foldr z y x) n xs) (:) []
 
--- support :: [String] -> Int -> [(String, String)]
-support ws k
-    | ws == [] = error "..."
-    | otherwise = [ (supp words subss, subss) | words<- [ws], subss <- (flatten (map (\wx -> getsubs wx 0 k) ws))  ]
+
+
+
+{- 
+    Main function
+
+    Params:
+    ws =    list of words  :: [String]
+    k =     size of wanted result :: Int
+    subslen lenght of substrings :: Int
+    
+    Output
+    List of tuples [(Int, String)]
+    Number of occurences in all words and that substr.
+-}
+support :: [String] -> Int -> Int -> [(Int, String)]
+support ws k subslen
+    | ws == [] = error "Empty word list!"
+    | otherwise = take k ( DL.sortBy (\(a,_) (b,_) -> compare b a) [ (supp words subss, subss) | words<- [ws], subss <- (flatten (map (\wx -> getsubs wx 0 subslen) ws))  ] )
 
 
 
@@ -27,6 +49,13 @@ support ws k
 {- 
     Gets all possible substring from a single string (duplicates included).
     example: getsubs "kissa" 0 2 --> ["ki","is","ss","sa"]
+    
+    Params:
+    w       given word/String
+    i       start index (usually 0)
+    len     lenght of the wanted substr.
+
+    Hence the result contains (length w) - len substrings.
 -}
 getsubs :: String -> Int -> Int -> [String]
 getsubs w i len
@@ -37,7 +66,7 @@ getsubs w i len
 {- 
     Gets a substring.
     params:
-    w = string
+    w = geven word :: String
     i = start index [0, len-1]
     l = stop index (0-based, included). Error if overflow!
 -}
@@ -49,7 +78,8 @@ sub_ w i l
 
 
 {- 
-    Returns Int how many substrs was found from a list of words.
+    Returns Int how many times given substrs was found from a list of words.
+    
     Example input: ["hello","there","all"], "ll":
     gets num. of occurences from 1. word (see func. subs), calls recursively itself
     for rest of the words
@@ -64,6 +94,8 @@ supp (w:ws) s = (subs w s 0) + (supp ws s)
 
 {- 
     Take ONE string and substr and return number of substring occurences
+    
+    Note: Currently supports only 2 chars long substring search.
 -}
 subs :: String -> String -> Int -> Int
 subs w s i
