@@ -1,3 +1,4 @@
+import Data.List as DL
 {-
     Task 02-04
 
@@ -10,10 +11,23 @@
     then one possible answer is [(2,"ll"),(2,"he"),(1,"th")]
 -}
 
--- Tähän jäätiin, eli yritä hakea jokainen x pitkä subs sanasta
--- "hello"- > he, el, ll, lo (josta sitten lasketaan esiintymät kaikista!)
--- example: getsubs "kissa" 0 2 -> ["ki","is","ss","sa"]
 
+-- take k (DL.sortBy (\(a,_) (b,_) -> compare a b) )
+flatten :: [[a]] -> [a]         
+flatten xs = (\z n -> foldr (\x y -> foldr z y x) n xs) (:) []
+
+-- support :: [String] -> Int -> [(String, String)]
+support ws k
+    | ws == [] = error "..."
+    | otherwise = [ (supp words subss, subss) | words<- [ws], subss <- (flatten (map (\wx -> getsubs wx 0 k) ws))  ]
+
+
+
+
+{- 
+    Gets all possible substring from a single string (duplicates included).
+    example: getsubs "kissa" 0 2 --> ["ki","is","ss","sa"]
+-}
 getsubs :: String -> Int -> Int -> [String]
 getsubs w i len
     | (i+len) > length w = []
@@ -42,13 +56,14 @@ sub_ w i l
     Above example input:
     1 + 0 + 1 = 2
 -} 
+supp :: [String] -> String -> Int
 supp [] _ = 0
 supp (w:[]) s = (subs w s 0)
 supp (w:ws) s = (subs w s 0) + (supp ws s)
 
 
 {- 
-    Take string and substr and return number of substring occurences
+    Take ONE string and substr and return number of substring occurences
 -}
 subs :: String -> String -> Int -> Int
 subs w s i
