@@ -12,11 +12,12 @@
 
 -- Tähän jäätiin, eli yritä hakea jokainen x pitkä subs sanasta
 -- "hello"- > he, el, ll, lo (josta sitten lasketaan esiintymät kaikista!)
+-- example: getsubs "kissa" 0 2 -> ["ki","is","ss","sa"]
 
 getsubs :: String -> Int -> Int -> [String]
 getsubs w i len
-    | i > length w - len = []
-    | otherwise = [sub_ i (i+len-1)] : getsubs w (i+1) len
+    | (i+len) > length w = []
+    | otherwise = [sub_ w i (i+len-1)] ++ getsubs w (i+1) len
 
 
 {- 
