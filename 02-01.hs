@@ -2,7 +2,6 @@
 -- filterpoints receives a distance function [that receives two points and outputs a Float], 
 -- point (x,y), distance d and list of points as a param.
 -- Points too far are filtered out. 
--- mandist has 
 
 -- fn: distance function
 filterpoints :: ((Float,Float) -> (Float,Float) -> Float) -> (Float, Float) -> Float -> [(Float, Float)] -> [(Float, Float)]
