@@ -6,6 +6,9 @@ module Date (
     nextDate
 ) where
 
+-- I assume this is what was asked...?  ^^
+-- "-- and make a module (or modules) from the functions.."
+
 -- 03-01.hs
 
 -- Define our Date typeclass
